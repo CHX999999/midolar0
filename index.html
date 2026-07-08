@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0B0E14">
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <title>Dólar Elite | Terminal Profesional</title>
+</head>
+<body>
+    <div id="loading-overlay" class="loading-overlay" aria-hidden="true">
+        <div class="loading-spinner"></div>
+        <span class="loading-text">Obteniendo cotizaciones...</span>
+    </div>
+    <div id="error-banner" class="error-banner" role="alert" aria-live="assertive" hidden>
+        <span id="error-message">No se pudieron obtener las cotizaciones. Reintentando...</span>
+        <button id="error-dismiss" type="button" aria-label="Cerrar alerta">&times;</button>
+    </div>
+    <header class="header">
+        <div class="header-top">
+            <button id="theme-toggle" type="button" class="icon-btn">◐</button>
+            <h1 class="main-title">DÓLAR <span class="highlight">ELITE</span></h1>
+            <div class="header-actions">
+                <button id="view-toggle" type="button" class="icon-btn" title="Cambiar vista">▦</button>
+                <button id="export-btn" type="button" class="icon-btn" title="Exportar datos">⬇</button>
+            </div>
+        </div>
+        <div class="update-pill" id="last-update">Conectando...</div>
+        <div class="converter-box">
+            <input
+                type="text"
+                id="monto-usuario"
+                inputmode="decimal"
+                autocomplete="off"
+                placeholder="INGRESAR MONTO (ARS)"
+                aria-label="Monto en pesos argentinos"
+            >
+        </div>
+        <div class="timeframe-selector">
+            <button class="timeframe-btn active" data-tf="1H">1H</button>
+            <button class="timeframe-btn" data-tf="24H">24H</button>
+            <button class="timeframe-btn" data-tf="7D">7D</button>
+            <button class="timeframe-btn" data-tf="30D">30D</button>
+        </div>
+    </header>
+    <main class="main-container" id="cards-view"></main>
+    <main class="table-view" id="table-view" hidden>
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Dólar</th>
+                    <th>Compra</th>
+                    <th>Venta</th>
+                    <th>Spread</th>
+                    <th>Cambio 24H</th>
+                    <th>Máx 24H</th>
+                    <th>Mín 24H</th>
+                    <th>Volatilidad</th>
+                </tr>
+            </thead>
+            <tbody id="table-body"></tbody>
+        </table>
+    </main>
+    <div id="notification" class="notification" hidden></div>
+    <script src="script.js"></script>
+</body>
+</html>
