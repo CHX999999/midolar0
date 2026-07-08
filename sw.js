@@ -8,8 +8,6 @@ const urlsToCache = [
 ];
 
 self.addEventListener('install', event => {
-    // skipWaiting fuerza que el nuevo SW tome el control inmediatamente
-    self.skipWaiting();
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(cache => {
@@ -19,30 +17,30 @@ self.addEventListener('install', event => {
 });
 
 self.addEventListener('fetch', event => {
-    // ESTRATEGIA: Red primero (Network First)
     event.respondWith(
-        fetch(event.request)
+        caches.match(event.request)
             .then(response => {
-                // Si la red responde, guardamos la nueva versión en caché
-                if (response && response.status === 200 && response.type === 'basic') {
-                    const responseToCache = response.clone();
-                    caches.open(CACHE_NAME).then(cache => {
-                        cache.put(event.request, responseToCache);
-                    });
+                if (response) {
+                    return response;
                 }
-                return response;
-            })
-            .catch(() => {
-                // Si falla la red, buscamos en el caché
-                return caches.match(event.request);
+                return fetch(event.request).then(
+                    response => {
+                        if (!response || response.status !== 200 || response.type !== 'basic') {
+                            return response;
+                        }
+                        const responseToCache = response.clone();
+                        caches.open(CACHE_NAME)
+                            .then(cache => {
+                                cache.put(event.request, responseToCache);
+                            });
+                        return response;
+                    }
+                );
             })
     );
 });
 
 self.addEventListener('activate', event => {
-    // claim permite al SW controlar la página inmediatamente
-    event.waitUntil(clients.claim());
-    
     const cacheWhitelist = [CACHE_NAME];
     event.waitUntil(
         caches.keys().then(cacheNames => {
