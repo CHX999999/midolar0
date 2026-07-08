@@ -1,4 +1,3 @@
-
 const configs = [
     { id: 'oficial', keys: ['Oficial'], l: 'Banco Nación' },
     { id: 'blue', keys: ['Blue'], l: 'Mercado Informal' },
@@ -31,9 +30,10 @@ const notification = document.getElementById('notification');
 function initTheme() {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
-if (savedTheme === 'light') document.body.classList.add('light');
-} else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-document.body.classList.add('light');    }
+        if (savedTheme === 'light') document.body.classList.add('light-mode');
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+        document.body.classList.add('light-mode');
+    }
 }
 initTheme();
 
@@ -48,25 +48,7 @@ if ('serviceWorker' in navigator) {
                 console.log('Error al registrar Service Worker:', error);
             });
     });
-
-    // FORZAR ACTUALIZACIÓN DEL SERVICE WORKER
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js').then(registration => {
-        registration.onupdatefound = () => {
-            const installingWorker = registration.installing;
-            installingWorker.onstatechange = () => {
-                if (installingWorker.state === 'installed') {
-                    if (navigator.serviceWorker.controller) {
-                        console.log('Nueva versión detectada. Recargando para aplicar cambios...');
-                        window.location.reload(); // Esto fuerza la actualización visual
-                    }
-                }
-            };
-        };
-    });
 }
-}
-
 
 // Inicialización de tarjetas con elementos avanzados
 configs.forEach(m => {
