@@ -309,7 +309,7 @@ body.light-mode .card-top h2 {
     letter-spacing: 1px;
     
     /* Mantenemos la sombra, pero la ajustamos un poco para que destaque sobre el fondo claro */
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); 
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5); 
     
     /* Degradado en tonos azules para el modo claro */
     background: linear-gradient(135deg, #0369A1 0%, #0ea5e9 100%) !important;
@@ -1133,5 +1133,62 @@ body.light-mode .icon-btn:hover {
     .cards-view {
         grid-template-columns: repeat(3, 1fr); /* 3 columnas iguales */
         padding: 30px; /* Un poco más de aire en escritorio */
+    }
+}
+/* --- Lógica de Acordeón Móvil --- */
+@media (max-width: 768px) {
+    .card {
+        cursor: pointer;
+        transition: height 0.4s ease, opacity 0.4s ease;
+        overflow: hidden;
+        /* Esto hace que el clic se sienta natural */
+        user-select: none; 
+    }
+    
+    .chart-wrap {
+        display: none; /* Oculto por defecto en móvil */
+        height: 0;
+        opacity: 0;
+    }
+
+    /* Clase que añadiremos con JavaScript al hacer clic */
+    .card.expanded {
+        height: 250px !important; 
+    }
+
+    .card.expanded .chart-wrap {
+        display: block !important;
+        height: 200px !important;
+        opacity: 1;
+    }
+}
+
+/* Estilos para móvil */
+@media (max-width: 767px) {
+    .card { display: none; } /* Ocultamos las tarjetas grandes */
+    
+    .list-item {
+        border-bottom: 1px solid #ccc;
+        padding: 15px;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .row-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .row-details {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+    }
+
+    .row-details.active {
+        max-height: 200px; /* Suficiente para el gráfico */
+        margin-top: 15px;
     }
 }
